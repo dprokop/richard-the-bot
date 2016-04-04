@@ -1,0 +1,24 @@
+{
+  "extends": "standard",
+  "parser": "babel-eslint",
+  "ecmaFeatures": {
+    "jsx": true,
+    "arrowFunctions": true,
+    "blockBindings": true,
+    "generators": true,
+    "classes": true,
+    "defaultParams": true,
+    "spread": true
+  },
+  "rules": {
+    "no-unused-vars": 0,
+    "max-len": [1, 100, 4, {"ignoreComments":true, "ignoreUrls": true, "ignorePattern" : ^\s*it\('* }],
+    "no-case-declarations": 2,
+    spaced-comment: [2, "always", { "exceptions": ["="] }]
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  }
+}

@@ -1,0 +1,12 @@
+*DS_Store
+*.sublime-workspace
+dist
+dist/*
+docs
+docs/*
+*.log
+*.log.?
+*log-file.txt
+log.txt.*
+node_modules/
+log-file.txt.*

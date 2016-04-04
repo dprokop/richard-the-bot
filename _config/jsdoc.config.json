@@ -1,0 +1,13 @@
+{
+    "source": {
+        "include": ["src/app"],
+        "exclude": ["src/app/components"],
+        "includePattern": ".+\\.js?$",
+        "excludePattern": ".+\\.spec.js?$"
+    },
+    "opts": {
+        "destination": "./docs/",
+        "template": "node_modules/minami",
+        "recurse": true
+    }
+}
