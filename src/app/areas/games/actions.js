@@ -32,6 +32,15 @@ export const ADD_GAME = 'ADD_GAME'
  * @constant
  * @type {[type]}
  */
+export const START_GAME = 'START_GAME'
+
+/**
+ * @todo Define action types for this area
+ *
+ * [Action name] action type
+ * @constant
+ * @type {[type]}
+ */
 export const CANCEL_GAME = 'CANCEL_GAME'
 
 /**
@@ -87,6 +96,15 @@ export const REMOVE_PLAYER = 'REMOVE_PLAYER'
  * @type {[type]}
  */
 export const GET_NEW_PLAYER = 'GET_NEW_PLAYER'
+
+/**
+ * @todo Define action types for this area
+ *
+ * [Action name] action type
+ * @constant
+ * @type {[type]}
+ */
+export const ADD_NEW_PLAYER = 'ADD_NEW_PLAYER'
 
 /* =====  End of Action types  ======*/
 
@@ -147,6 +165,21 @@ export function addGame (id, channel, organizer, ts) {
       channel: channel,
       organizer: organizer,
       createdAt: ts
+    }
+  }
+}
+
+/**
+ * [Action name] action creator
+ * @param {[type]} payload [description]
+ * @return {@link ACTION_NAME} action object
+ */
+export function startGame (gameId, ts) {
+  return {
+    type: START_GAME,
+    payload: {
+      gameId: gameId,
+      startedAt: ts
     }
   }
 }
@@ -236,7 +269,6 @@ export function playerRejected (gameId, playerId) {
  * @return {@link REMOVE_PLAYER} action object
  */
 export function removePlayer (gameId, playerId) {
-  console.log('removePlayer')
   return {
     type: REMOVE_PLAYER,
     payload: {
@@ -252,10 +284,26 @@ export function removePlayer (gameId, playerId) {
  * @return {@link GET_NEW_PLAYER} action object
  */
 export function getNewPlayer (id) {
+  console.log('getting new player')
   return {
     type: GET_NEW_PLAYER,
     payload: {
       gameId: id
+    }
+  }
+}
+
+/**
+ * [Action name] action creator
+ * @param {[type]} payload [description]
+ * @return {@link GET_NEW_PLAYER} action object
+ */
+export function addNewPlayer (gameId, playerId) {
+  return {
+    type: ADD_NEW_PLAYER,
+    payload: {
+      gameId: gameId,
+      playerId: playerId
     }
   }
 }

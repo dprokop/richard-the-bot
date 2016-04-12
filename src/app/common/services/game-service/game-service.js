@@ -1,9 +1,10 @@
 import _ from 'underscore'
+import shortid from 'shortid'
 import { getState } from '../../../app'
 
 class GameService {
-  createId (timespan) {
-    return timespan.split('.')[0]
+  createId () {
+    return shortid.generate()
   }
 
   getStatus () {
@@ -17,13 +18,27 @@ class GameService {
   getCurrentGame () {
     return getState().games[this.getCurrentGameId()]
   }
+  getCurrentGameOrganizer () {
+    return getState().games[this.getCurrentGameId()].meta.organizer
+  }
+  getCurrentGamePlayers () {
+    return getState().games[this.getCurrentGameId()].players
+  }
 
   getCurrentGameId () {
     return getState().status.gameId
   }
 
+  getCurrentGameCreationTime () {
+    return this.getMeta(this.getCurrentGameId()).createdAt
+  }
+
   getCurrentGameStartTime () {
-    return getState().status.startedAt
+    return this.getMeta(this.getCurrentGameId()).startedAt
+  }
+
+  getCurrentGameTime () {
+    return Math.floor((Date.now() - this.getCurrentGameStartTime()) / 1000)
   }
 
   getMeta (id) {
@@ -31,12 +46,15 @@ class GameService {
   }
 
   getOrganizer (id) {
-    return getState().games[id].meta.createdBy
+    return getState().games[id].meta.organizer
   }
 
   getPlayers (id) {
-    console.log(id)
     return getState().games[id].players
+  }
+
+  getRecentlyAddedPlayer (id) {
+    return _.last(getState().games[id].players.pending)
   }
 
   getAvailablePlayers (id) {
@@ -44,6 +62,7 @@ class GameService {
   }
 
   getPendingPlayers (id) {
+    console.log(getState().games[id].players.pending)
     return getState().games[id].players.pending
   }
 
@@ -58,7 +77,6 @@ class GameService {
   countAvailablePlayers (id) {
     return getState().games[id].players.available.length
   }
-
 }
 
 export default GameService

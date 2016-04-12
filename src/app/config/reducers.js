@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-// import gamesReducer from 'areas/games/reducer'
 import { messages as messagesReducer } from '../areas/messages/reducer'
 import { games as gamesReducer } from '../areas/games/reducer'
 import { status as statusReducer } from '../areas/status/reducer'

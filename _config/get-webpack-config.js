@@ -94,7 +94,7 @@ module.exports = function (options) {
 
   return {
     entry: {
-      client: 'index.js'
+      bot: 'index.js'
     },
 
     eslint: {

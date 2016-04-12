@@ -16,7 +16,6 @@ fs.readdirSync('../node_modules')
 module.exports = function (config) {
   config.set({
     browsers: ['PhantomJS'],
-    target: 'node',
     singleRun: true,
     frameworks: ['jasmine'],
     files: [

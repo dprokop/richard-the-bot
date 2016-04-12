@@ -1,27 +1,42 @@
 var RBotConfig = new Map()
 
 RBotConfig.set('START_GAME', {
-  phrases: ['let\'s', 'do it', 'grać!', 'zagrajmy', 'play', 'it\'s', 'time', '!', 'gramy'],
+  phrases: ['let\'s', 'do it', 'zagrajmy', 'it\'s', 'time', '!', 'gramy'],
   triggers: ['direct_mention', 'mention']
 })
 
 RBotConfig.set('CONFIRM_GAME', {
-  phrases: ['^ok$'],
+  phrases: ['^ok$', '^yes$'],
   triggers: ['direct_mention', 'mention']
 })
 
 RBotConfig.set('REJECT_GAME', {
-  phrases: ['^no$'],
+  phrases: ['^no$', '^spierdalaj$'],
   triggers: ['direct_mention', 'mention']
 })
 
 RBotConfig.set('CANCEL_GAME', {
-  phrases: ['^fuck it$'],
+  phrases: ['^fuck it$', '^cancel$'],
   triggers: ['direct_mention', 'mention']
 })
 
 RBotConfig.set('GET_STATUS', {
   phrases: ['^status$'],
+  triggers: ['direct_mention', 'mention']
+})
+
+RBotConfig.set('GET_HELP', {
+  phrases: ['^help$', '^hello$'],
+  triggers: ['direct_mention', 'mention']
+})
+
+RBotConfig.set('PING', {
+  phrases: ['^ping$'],
+  triggers: ['direct_mention', 'mention']
+})
+
+RBotConfig.set('CONSOLE_LOG', {
+  phrases: ['^whip it$'],
   triggers: ['direct_mention', 'mention']
 })
 

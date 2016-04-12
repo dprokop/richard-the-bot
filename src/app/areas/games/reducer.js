@@ -15,14 +15,13 @@ import _ from 'underscore'
  * @return {[type]} - array representing new state
  */
 
-export default function games (state = {}, action) {
+export function games (state = {}, action) {
   var payload = action.payload
-
   switch (action.type) {
     case gamesActions.ADD_GAME: {
       let nextState = Object.assign({}, state)
 
-      nextState[Math.floor(payload.createdAt)] = {
+      nextState[payload.id] = {
         meta: {
           channel: payload.channel,
           organizer: payload.organizer,
@@ -39,10 +38,18 @@ export default function games (state = {}, action) {
       return nextState
     }
 
+    case gamesActions.START_GAME: {
+      let nextState = Object.assign({}, state)
+      nextState[payload.gameId].meta.startedAt = Date.now()
+      return nextState
+    }
+
     case gamesActions.UPDATE_PLAYERS: {
       let nextState = Object.assign({}, state)
       let players = Object.assign({}, nextState[payload.gameId].players, payload.players)
-
+      console.log('update')
+      console.log(players)
+      console.log('update')
       nextState[payload.gameId].players = players
 
       return nextState
@@ -72,7 +79,6 @@ export default function games (state = {}, action) {
     case gamesActions.PLAYER_ACCEPTED: {
       let nextState = Object.assign({}, state)
       let game = nextState[payload.gameId]
-      console.log(typeof game.players.accepted)
       let players = {
         available: game.players.available,
         pending: _.without(game.players.pending, payload.playerId),
@@ -87,23 +93,40 @@ export default function games (state = {}, action) {
     case gamesActions.REMOVE_PLAYER: {
       let nextState = Object.assign({}, state)
       let game = nextState[payload.gameId]
-      let players = Object.assign({
+      console.log('remove')
+      console.log(game.players)
+      console.log('remove')
+      let players = Object.assign({}, {
+        available: game.players.available,
         pending: _.without(game.players.pending, payload.playerId),
-        rejected: game.players.rejected.push(payload.playerId)
-      }, nextState[payload.gameId].players)
+        rejected: _.union(game.players.rejected, [payload.playerId]),
+        accepted: _.without(game.players.accepted, payload.playerId)
+      })
       nextState[payload.gameId].players = players
+      console.log('with')
+      console.log('with=============================')
+      console.log(nextState[payload.gameId].players)
+      console.log('with=============================')
+
+      console.log('with')
+
       return nextState
     }
 
     case gamesActions.GET_NEW_PLAYER: {
       let nextState = Object.assign({}, state)
       let game = nextState[payload.gameId]
-      var newPlayer = game.players.available[_.random(game.players.available.length)]
 
+      var newPlayer = game.players.available[_.random(game.players.available.length - 1)]
+      console.log('newPlayer ============ ', newPlayer)
       let players = Object.assign({
-        pending: game.players.pending.push(newPlayer),
-        available: _.without(game.players.available, newPlayer)
-      }, nextState[payload.gameId].players)
+        pending: _.union(game.players.pending, [newPlayer]),
+        available: _.without(game.players.available, newPlayer),
+        rejected: game.players.rejected,
+        accepted: game.players.accepted
+      })
+
+      console.log(players)
       nextState[payload.gameId].players = players
 
       return nextState

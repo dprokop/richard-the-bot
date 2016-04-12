@@ -4,8 +4,6 @@ import { receivedMessage } from '../../../areas/messages/actions'
 
 class SlackBot {
   boot (config) {
-    console.log('SlackBot boot')
-
     return new Promise((resolve, reject) => {
       this.controller = Botkit.slackbot({
         debug: false
