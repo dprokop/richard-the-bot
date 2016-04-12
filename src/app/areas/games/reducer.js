@@ -40,7 +40,7 @@ export function games (state = {}, action) {
 
     case gamesActions.START_GAME: {
       let nextState = Object.assign({}, state)
-      nextState[payload.gameId].meta.startedAt = Date.now()
+      nextState[payload.gameId].meta.startedAt = payload.startedAt
       return nextState
     }
 

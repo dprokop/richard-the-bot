@@ -18,11 +18,13 @@ class GameService {
   getCurrentGame () {
     return getState().games[this.getCurrentGameId()]
   }
+
   getCurrentGameOrganizer () {
-    return getState().games[this.getCurrentGameId()].meta.organizer
+    return this.getCurrentGame() ? this.getCurrentGame().meta.organizer : undefined
   }
+
   getCurrentGamePlayers () {
-    return getState().games[this.getCurrentGameId()].players
+    return this.getCurrentGame() ? this.getCurrentGame().players : undefined
   }
 
   getCurrentGameId () {
@@ -39,6 +41,10 @@ class GameService {
 
   getCurrentGameTime () {
     return Math.floor((Date.now() - this.getCurrentGameStartTime()) / 1000)
+  }
+
+  getCurrentGameElapsedTime () {
+    return 16 - Math.ceil(this.getCurrentGameTime() / 60)
   }
 
   getMeta (id) {

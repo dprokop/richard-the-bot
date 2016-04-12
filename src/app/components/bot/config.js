@@ -21,7 +21,7 @@ RBotConfig.set('CANCEL_GAME', {
 })
 
 RBotConfig.set('GET_STATUS', {
-  phrases: ['^status$'],
+  phrases: ['^status$', '^what\'s up$'],
   triggers: ['direct_mention', 'mention']
 })
 
