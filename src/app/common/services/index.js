@@ -1,9 +1,11 @@
 import SlackBotService from './slack-bot'
 import GameService from './game-service'
+import DBService from './db-service'
 
 let Services = {
   SlackBot: new SlackBotService(),
-  Game: new GameService()
+  Game: new GameService(),
+  Mongo: new DBService()
 }
 
 export default Services

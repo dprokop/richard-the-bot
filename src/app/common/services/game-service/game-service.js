@@ -68,7 +68,6 @@ class GameService {
   }
 
   getPendingPlayers (id) {
-    console.log(getState().games[id].players.pending)
     return getState().games[id].players.pending
   }
 
@@ -82,6 +81,18 @@ class GameService {
 
   countAvailablePlayers (id) {
     return getState().games[id].players.available.length
+  }
+
+  isOrganizer (id) {
+    return this.getCurrentGameOrganizer() === id
+  }
+
+  isUserInvited (id) {
+    return _.indexOf(this.getCurrentGamePlayers().pending, id) > -1
+  }
+
+  hasUserAccepted (id) {
+    return _.indexOf(this.getCurrentGamePlayers().accepted, id) > -1
   }
 }
 

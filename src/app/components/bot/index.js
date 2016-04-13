@@ -36,6 +36,7 @@ class RBot {
 
   directMentionHandler (bot, msg) {
     dispatch(messageActions.receivedMessage(msg))
+    Services.SlackBot.getContext(msg.channel)
 
     if (msg.text === '' || msg.text === ':') {
       bot.reply(msg, 'Well, try `@ryszard hello` to get some help <@' + msg.user + '>')
@@ -44,7 +45,6 @@ class RBot {
 
   startGameHandler (bot, msg) {
     let id = GameService.createId()
-
     if (GameService.getStatus() === 'idle') {
       dispatch(gamesActions.createGame(id, msg.channel, msg.user, Date.now()))
         .then((response) => {
@@ -62,12 +62,24 @@ class RBot {
     let game = GameService.getCurrentGame()
     let reply = 'Cool, great you have joined!'
 
-    if (GameService.getStatus() === 'idle') {
-      reply = '_No game going on right now! You can always start a new one!_'
+    if (GameService.isOrganizer(msg.user)) {
+      reply = '_Sorry, you are the organizer, you have already accepted..._'
+      bot.reply(msg, reply)
+      return false
     }
 
-    if (GameService.getCurrentGameOrganizer() === msg.user) {
-      reply = '_Sorry, you are the organizer, you have already accepted..._'
+    if (GameService.hasUserAccepted(msg.user)) {
+      bot.reply(msg, '_You have already joined this game_')
+      return false
+    }
+
+    if (!GameService.isUserInvited(msg.user)) {
+      bot.reply(msg, '_Sorry, you are not invited to this game_')
+      return false
+    }
+
+    if (GameService.getStatus() === 'idle') {
+      reply = '_No game going on right now! You can always start a new one!_'
     }
 
     if (GameService.getStatus() === 'pending') {
@@ -124,7 +136,6 @@ class RBot {
   }
 
   getStatusHandler (bot, msg) {
-    console.log('--------------------------> ', GameService.getStatus())
     let reply
 
     if (GameService.getStatus() === 'idle') {

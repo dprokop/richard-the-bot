@@ -3,6 +3,9 @@ import setupStore from './config/store'
 import RBot from './components/bot'
 import { bootServices } from './common/services'
 
+var MongoClient = require('mongodb').MongoClient
+var assert = require('assert')
+
 /** Class representing app */
 class App {
 

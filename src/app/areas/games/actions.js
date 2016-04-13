@@ -125,16 +125,17 @@ export function createGame (id, channel, organizer, ts) {
   return (dispatch, getState) => {
     dispatch(addGame(id, channel, organizer, ts))
     return new Promise((resolve, reject) => {
-      Services.SlackBot.bot.api.groups.info({channel: channel}, (err, response) => {
+      var context = Services.SlackBot.getContext(channel)
+      context.ctx.info({channel: channel}, (err, response) => {
         if (err) {
           reject(err)
         }
-
+        console.log(response)
         dispatch(
           gamesActions.updatePlayers(
             id,
             {
-              available: _.without(response.group.members, organizer, Services.SlackBot.id),
+              available: _.without(response[context.name].members, organizer, Services.SlackBot.id),
               accepted: [organizer]
             }
           )
