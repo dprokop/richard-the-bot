@@ -25,9 +25,8 @@ fs.readdirSync('node_modules')
   })
 
 module.exports = function (options) {
+  var plugins = []
   var settings = Object.assign({}, defaultOptions, options)
-  var stylesETP = new ExtractTextPlugin('main.css', {allChunks: true})
-  var vendorStylesETP = new ExtractTextPlugin('vendors.css', {allChunks: true})
   var envPlugin = new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify(defaultOptions.env)
   })
@@ -37,14 +36,8 @@ module.exports = function (options) {
       test: /\.(js|jsx)$/,
       exclude: /(node_modules)/,
       loader: settings.reactHot
-        ? 'react-hot-loader!babel-loader?presets[]=react,presets[]=es2015!eslint-loader?fix=true'
-        : 'babel-loader?presets[]=react,presets[]=es2015!eslint-loader'
-    },
-    {
-      test: require.resolve('react'), loader: 'expose?React'
-    },
-    {
-      test: require.resolve('react-dom'), loader: 'expose?ReactDOM'
+        ? 'babel-loader?presets[]=es2015!eslint-loader?fix=true'
+        : 'babel-loader?presets[]=es2015!eslint-loader'
     }
   ]
   var jsonLoader = [
@@ -53,30 +46,7 @@ module.exports = function (options) {
       loader: 'json-loader'
     }
   ]
-  var cssLoader = 'css-loader?' +
-  (settings.minify ? 'minimize&importLoaders=1' : '&importLoaders=1') +
-  (settings.devtool.indexOf('source-map') > -1 ? '&sourceMap' : '')
 
-  var postcssLoader = '!postcss-loader'
-  var sassLoader = '!sass-loader?sourceMap'
-
-  var styleLoaders = [
-    {
-      test: /.scss$/,
-      exclude: /(node_modules)/,
-      loader: settings.extractCss
-        ? stylesETP.extract('style-loader', cssLoader + postcssLoader + sassLoader)
-        : 'style-loader!' + cssLoader + postcssLoader + sassLoader
-    },
-    {
-      test: /(node_modules)*\.(css)$/,
-      loader: settings.extractCss
-        ? vendorStylesETP.extract('style-loader', cssLoader)
-        : 'style-loader' + cssLoader
-    }
-  ]
-
-  var plugins = (settings.extractCss ? [stylesETP, vendorStylesETP] : [])
   plugins.push(envPlugin)
 
   if (settings.uglify) {
@@ -125,9 +95,6 @@ module.exports = function (options) {
       }
     },
     externals: nodeModules,
-
-    postcss: [autoprefixer({browsers: settings.autoprefixerBrowsers})],
-
     plugins: plugins
   }
 }
