@@ -6,11 +6,11 @@
   "scripts": {
     "test": " karma start _config/karma.config.js",
     "test:watch": "karma start _config/karma.config.js --no-single-run --auto-watch",
-    "dev": "rm -rf ./dist && export NODE_ENV=development && webpack --config _config/webpack.config.js",
-    "dev:watch": "export NODE_ENV=development && webpack -d --watch --display-error-details --config _config/webpack.config.js",
-    "dist": "rm -rf ./dist && export NODE_ENV=production && webpack --config _config/webpack.prod.config.js",
-    "serve": "export NODE_ENV=development && nodemon dist/bot.bundle.js",
-    "serve:watch": "export NODE_ENV=development && nodemon --exec babel-node src/index.js",
+    "dev": "rm -rf ./dist && webpack --config _config/webpack.config.js",
+    "dev:watch": "webpack -d --watch --display-error-details --config _config/webpack.config.js",
+    "dist": "rm -rf ./dist && webpack --config _config/webpack.prod.config.js",
+    "serve": "nodemon dist/bot.bundle.js",
+    "serve:watch": "nodemon --exec babel-node src/index.js",
     "docs": "node _scripts/verifyAreas.js && jsdoc --configure _config/jsdoc.config.json --verbose",
     "areas:create": "node _scripts/createArea.js",
     "areas:verify": "node _scripts/verifyAreas.js"

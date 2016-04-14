@@ -5,7 +5,7 @@ export default {
   },
   services: {
     SlackBot: {
-      token: 'xoxb-28855753061-SAYBLxuWVqEE1Ibrk0N04ne2',
+      token: process.env.RBOT_SLACK_TOKEN,
       enabled: true
     },
     Mongo: {
