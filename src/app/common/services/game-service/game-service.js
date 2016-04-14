@@ -83,6 +83,10 @@ class GameService {
     return getState().games[id].players.available.length
   }
 
+  countAcceptedPlayers (id) {
+    return getState().games[id].players.accepted.length
+  }
+
   isOrganizedBy (id) {
     return this.getCurrentGameOrganizer() === id
   }
@@ -101,6 +105,10 @@ class GameService {
 
   isPending () {
     return this.getStatus() === 'pending'
+  }
+
+  isOccupied () {
+    return this.getStatus() === 'occupied'
   }
 }
 

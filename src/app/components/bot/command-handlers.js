@@ -1,9 +1,5 @@
 import Services from '../../common/services'
-import {
-    getStore,
-    getState,
-    dispatch
-} from '../../app'
+import { getStore, getState, dispatch } from '../../app'
 import * as messageActions from '../../areas/messages/actions'
 import * as playersActions from '../../areas/players/actions'
 import * as gamesActions from '../../areas/games/actions'
@@ -23,16 +19,16 @@ function directMentionHandler (bot, msg) {
 
 function startGameHandler (bot, msg) {
   let id = GameService.createId()
-  if (GameService.getStatus() === 'idle') {
+
+  if (GameService.isIdle()) {
     dispatch(gamesActions.createGame(id, msg.channel, msg.user, Date.now()))
-            .then((response) => {
-              let playersToNotify = getPlayersString(GameService.getPendingPlayers(id))
-              bot.reply(msg, `${playersToNotify} do you wanna play?`)
-            })
-  } else if (GameService.getStatus() === 'pending') {
+      .then((response) => {
+        bot.reply(msg, `${getPlayersString(GameService.getPendingPlayers(id))} do you wanna play?`)
+      })
+  } else if (GameService.isPending()) {
     bot.reply(msg, '_There is a game I\'m organizing right now. Come back later :)_')
   } else {
-    bot.reply(msg, `_Sorry, there is a game going on right now... It will take ~${GameService.getCurrentGameElapsedTime()}min _`) // eslint-disable max-len`
+    bot.reply(msg, `_Sorry, there is a game going on right now... It will take ~${GameService.getCurrentGameElapsedTime()}min _`) // eslint-disable-line
   }
 }
 
@@ -43,8 +39,8 @@ function confirmGameHandler (bot, msg) {
   if (GameService.isIdle()) {
     bot.reply(msg, '_No game going on right now! You can always start a new one!_')
     return
-
   }
+
   if (GameService.isOrganizedBy(msg.user)) {
     reply = '_Sorry, you are the organizer, you have already accepted..._'
     bot.reply(msg, reply)
@@ -60,8 +56,6 @@ function confirmGameHandler (bot, msg) {
     bot.reply(msg, '_Sorry, you are not invited to this game_')
     return false
   }
-
-
 
   if (GameService.isPending()) {
     dispatch(gamesActions.playerAccepted(GameService.getCurrentGameId(), msg.user))
@@ -82,20 +76,20 @@ function rejectGameHandler (bot, msg) {
     return
   }
 
-  if (GameService.getStatus() === 'idle') {
+  if (GameService.isIdle()) {
     bot.reply('_Aaaaaaa, w00t?! `@ryszard help`_')
     return
   }
-  if (GameService.getCurrentGameOrganizer() === msg.user) {
-    bot.reply(msg, '_You are the organizer, you can only cancel a game:_ `@ryszard fuck it`')
+  if (GameService.isOrganizedBy(msg.user)) {
+    bot.reply(msg, '_You are the organizer, you can only cancel a game:_ `@ryszard cancel`')
     return
   }
 
-  if (GameService.getStatus() === 'pending' && GameService.countAvailablePlayers(gameId) > 0) {
+  if (GameService.isPending() && GameService.countAvailablePlayers(gameId) > 0) {
     dispatch(gamesActions.playerRejected(gameId, msg.user))
-            .then(() => {
-                bot.reply(msg, `<@${msg.user}> rejected.\n*<@${GameService.getRecentlyAddedPlayer(gameId)}> what about you?*`) // eslint-disable-line
-            })
+      .then(() => {
+          bot.reply(msg, `<@${msg.user}> rejected.\n*<@${GameService.getRecentlyAddedPlayer(gameId)}> what about you?*`) // eslint-disable-line
+      })
     return
   } else {
     reply = `<@${msg.user}> was the last one available. Try again later!`
@@ -109,6 +103,10 @@ function rejectGameHandler (bot, msg) {
 }
 
 function cancelGameHandler (bot, message) {
+  if (GameService.isIdle()) {
+    bot.reply(message, '_Cancel w00t?!_')
+    return
+  }
   bot.reply(message, '_All right, maybe next time..._')
   dispatch(statusActions.updateStatus({
     gameId: -1,
@@ -117,17 +115,16 @@ function cancelGameHandler (bot, message) {
 }
 
 function getStatusHandler (bot, msg) {
+  let organizer = GameService.getCurrentGameOrganizer()
+  let players = GameService.getCurrentGamePlayers()
   let reply
 
-  if (GameService.getStatus() === 'idle') {
-        bot.reply(msg, '_There is no game going on now. You can start one:) Need some help?_ `@ryszard help`') // eslint-disable-line
+  if (GameService.isIdle()) {
+    bot.reply(msg, '_There is no game going on now. You can start one:) Need some help?_ `@ryszard help`') // eslint-disable-line
     return
   }
 
-  if (GameService.getStatus() === 'pending') {
-    let organizer = GameService.getOrganizer(GameService.getCurrentGameId())
-    let players = GameService.getPlayers(GameService.getCurrentGameId())
-
+  if (GameService.isPending()) {
     reply = {
       'text': `*There is a pending game requested by <@${organizer}>*`,
       'attachments': []
@@ -154,9 +151,7 @@ function getStatusHandler (bot, msg) {
     }
   }
 
-  if (GameService.getStatus() === 'occupied') {
-    let organizer = GameService.getOrganizer(GameService.getCurrentGameId())
-    let players = GameService.getAcceptedPlayers(GameService.getCurrentGameId())
+  if (GameService.isOccupied()) {
     reply = {
       'text': `*There is a game going on requested by <@${organizer}>*`,
       'attachments': []
@@ -187,15 +182,15 @@ function periodicEventsHandler () {
 
 function gameStatusHandler (message) {
   let players = GameService.getCurrentGamePlayers()
-  console.log(typeof players)
+
   if (typeof players === 'undefined') {
     return false
   }
 
   if (players.accepted.length === 4) {
     let playersString = getPlayersString(players.accepted)
-    Services.SlackBot.bot.reply(message, playersString + ' let\'s play!')
 
+    Services.SlackBot.bot.reply(message, playersString + ' let\'s play!')
     dispatch(gamesActions.startGame(GameService.getCurrentGameId(), Date.now()))
     dispatch(statusActions.updateStatus({
       gameId: GameService.getCurrentGameId(),
@@ -210,12 +205,12 @@ function gameStatusHandler (message) {
 }
 
 function pingHandler (bot, message) {
-  if (GameService.getStatus() === 'pending') {
+  if (GameService.isPending()) {
     let reply = 'One shall answer when asked '
     reply += `${getPlayersString(GameService.getCurrentGamePlayers().pending)}!`
     bot.reply(message, reply)
   } else {
-    bot.reply(message, 'Pong b*tch, there is no one I could ping...')
+    bot.reply(message, '_Ping yourself, there is no one I could ping..._')
   }
 }
 
@@ -236,15 +231,13 @@ function getHelpHandler (bot, message) {
 }
 
 function consoleLogHandler (bot, message) {
-  console.log(getState())
   bot.reply(message, 'Roger!')
 }
 
 function getPlayersString (players) {
-  var playersString = _.map(players, (player) => {
+  return _.map(players, (player) => {
     return '<@' + player + '>'
   }).join(', ')
-  return playersString
 }
 
 export default {
