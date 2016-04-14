@@ -1,7 +1,6 @@
 import Botkit from 'botkit'
 import { getStore as store } from '../../../app'
 import { receivedMessage } from '../../../areas/messages/actions'
-import fs from 'fs'
 import _ from 'underscore'
 import stringify from 'json-stringify-safe'
 
@@ -34,14 +33,6 @@ class SlackBot {
   }
 
   registerBot (bot) {
-
-    fs.writeFile('bot.json', stringify(this.team.groups), function (err) {
-      if (err) {
-        return console.log(err)
-      }
-
-      console.log('The file was saved!')
-    })
     this.bot = bot
     this.id = bot.identity.id
   }

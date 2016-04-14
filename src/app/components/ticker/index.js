@@ -3,10 +3,12 @@ import shortid from 'shortid'
 class Ticker {
   constructor () {
     this.tickers = {}
+
     this.createCallback = this.createCallback.bind(this)
     this.do = this.do.bind(this)
     this.remove = this.remove.bind(this)
   }
+
   every (tick) {
     return this.createCallback(shortid.generate(), tick)
   }

@@ -83,16 +83,24 @@ class GameService {
     return getState().games[id].players.available.length
   }
 
-  isOrganizer (id) {
+  isOrganizedBy (id) {
     return this.getCurrentGameOrganizer() === id
   }
 
   isUserInvited (id) {
-    return _.indexOf(this.getCurrentGamePlayers().pending, id) > -1
+    return this.getCurrentGame() && _.indexOf(this.getCurrentGamePlayers().pending, id) > -1
   }
 
   hasUserAccepted (id) {
-    return _.indexOf(this.getCurrentGamePlayers().accepted, id) > -1
+    return this.getCurrentGame() && _.indexOf(this.getCurrentGamePlayers().accepted, id) > -1
+  }
+
+  isIdle () {
+    return this.getStatus() === 'idle'
+  }
+
+  isPending () {
+    return this.getStatus() === 'pending'
   }
 }
 

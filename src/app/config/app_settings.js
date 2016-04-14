@@ -11,7 +11,7 @@ export default {
     Mongo: {
       url: 'mongodb://localhost:27017/',
       dbName: 'ryszard-dev',
-      enabled: true
+      enabled: false
     }
   }
 }
