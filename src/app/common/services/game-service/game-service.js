@@ -111,5 +111,6 @@ class GameService {
     return this.getStatus() === 'occupied'
   }
 }
+var gameService = new GameService()
 
-export default GameService
+export default gameService
