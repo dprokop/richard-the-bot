@@ -39,7 +39,7 @@ export function games (state = {}, action) {
     }
 
     case gamesActions.START_GAME: {
-      let nextState = Object.assign({}, state)
+      var nextState = Object.assign({}, state)
       nextState[payload.gameId].meta.startedAt = payload.startedAt
       return nextState
     }
@@ -47,11 +47,7 @@ export function games (state = {}, action) {
     case gamesActions.UPDATE_PLAYERS: {
       let nextState = Object.assign({}, state)
       let players = Object.assign({}, nextState[payload.gameId].players, payload.players)
-      console.log('update')
-      console.log(players)
-      console.log('update')
       nextState[payload.gameId].players = players
-
       return nextState
     }
     case gamesActions.RANDOMIZE_PLAYERS: {
@@ -60,11 +56,13 @@ export function games (state = {}, action) {
       let playersLeft = []
       let players = nextState[payload.gameId].players
 
-      for (let i = 0; i < 3; i++) {
-        var idx = Math.floor(Math.random() * players.available.length)
+      _.each(payload.playerIds, (idx) => {
         newPlayers.push(players.available[idx])
-        players.available = _.without(players.available, players.available[idx])
-      }
+      })
+
+      players.available = _.filter(players.available, (player, index) => {
+        return _.indexOf(payload.playerIds, index) === -1
+      })
 
       players = Object.assign({}, players, {
         available: players.available,
@@ -85,7 +83,6 @@ export function games (state = {}, action) {
         accepted: _.union(game.players.accepted, [payload.playerId]),
         rejected: game.players.rejected
       }
-      console.log(players)
       nextState[payload.gameId].players = players
       return nextState
     }
@@ -103,13 +100,6 @@ export function games (state = {}, action) {
         accepted: _.without(game.players.accepted, payload.playerId)
       })
       nextState[payload.gameId].players = players
-      console.log('with')
-      console.log('with=============================')
-      console.log(nextState[payload.gameId].players)
-      console.log('with=============================')
-
-      console.log('with')
-
       return nextState
     }
 

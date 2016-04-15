@@ -121,18 +121,19 @@ export const ADD_NEW_PLAYER = 'ADD_NEW_PLAYER'
  * @param {[type]} payload [description]
  * @return {@link ACTION_NAME} action object
  */
-export function createGame (id, channel, organizer, ts) {
+export function createGame (id, channel, organizer, ts, botId) {
   return (dispatch, getState) => {
     dispatch(addGame(id, channel, organizer, ts))
     return new Promise((resolve, reject) => {
-      var context = Services.SlackBot.getContext(channel)
+      let context = Services.SlackBot.getContext(channel)
+
       context.ctx.info({channel: channel}, (err, response) => {
         if (err) {
           reject(err)
         }
-        console.log(response)
+
         dispatch(
-          gamesActions.updatePlayers(
+          updatePlayers(
             id,
             {
               available: _.without(response[context.name].members, organizer, Services.SlackBot.id),
@@ -141,7 +142,13 @@ export function createGame (id, channel, organizer, ts) {
           )
         )
 
-        dispatch(gamesActions.randomizePlayers(id))
+        dispatch(
+          randomizePlayers(
+            id,
+            getRandomPlayersIds(response[context.name].members.length - 2)
+          )
+        )
+
         dispatch(statusActions.updateStatus({
           gameId: id,
           status: 'pending'
@@ -219,11 +226,12 @@ export function updatePlayers (id, players) {
  * @param {[type]} payload [description]
  * @return {@link RANDOMIZE_PLAYERS} action object
  */
-export function randomizePlayers (id) {
+export function randomizePlayers (gameId, playerIds) {
   return {
     type: RANDOMIZE_PLAYERS,
     payload: {
-      gameId: id
+      gameId: gameId,
+      playerIds: playerIds
     }
   }
 }
@@ -251,8 +259,8 @@ export function playerAccepted (gameId, playerId) {
 export function playerRejected (gameId, playerId) {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
-      dispatch(gamesActions.removePlayer(gameId, playerId))
-      dispatch(gamesActions.getNewPlayer(gameId))
+      dispatch(removePlayer(gameId, playerId))
+      dispatch(getNewPlayer(gameId))
       resolve()
     })
   }
@@ -310,3 +318,9 @@ export function addNewPlayer (gameId, playerId) {
 }
 
 /* =====  End of Action creators  ======*/
+
+function getRandomPlayersIds (range) {
+  var rand = (_.first(_.shuffle(_.range(range)), 3))
+  console.log(rand)
+  return rand
+}
