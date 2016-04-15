@@ -1,4 +1,5 @@
 import Services from '../../common/services'
+import GameService from '../../common/services/game-service'
 import Ticker from '../ticker'
 import { getStore, getState, dispatch } from '../../app'
 import * as messageActions from '../../areas/messages/actions'
@@ -8,8 +9,6 @@ import * as statusActions from '../../areas/status/actions'
 import KeywordsConfig from './config.js'
 import CommandHandlers from './command-handlers.js'
 import _ from 'underscore'
-
-var GameService = Services.Game
 
 class RBot {
   constructor () {
@@ -38,4 +37,3 @@ class RBot {
 }
 
 export default RBot
-

@@ -1,8 +1,5 @@
 import Botkit from 'botkit'
-import { getStore as store } from '../../../app'
-import { receivedMessage } from '../../../areas/messages/actions'
 import _ from 'underscore'
-import stringify from 'json-stringify-safe'
 
 class SlackBot {
   boot (config) {

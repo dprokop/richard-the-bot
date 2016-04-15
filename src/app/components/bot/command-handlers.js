@@ -1,4 +1,5 @@
 import Services from '../../common/services'
+import GameService from '../../common/services/game-service'
 import { getStore, getState, dispatch } from '../../app'
 import * as messageActions from '../../areas/messages/actions'
 import * as playersActions from '../../areas/players/actions'
@@ -6,11 +7,8 @@ import * as gamesActions from '../../areas/games/actions'
 import * as statusActions from '../../areas/status/actions'
 import _ from 'underscore'
 
-var GameService = Services.Game
-
 function directMentionHandler (bot, msg) {
   dispatch(messageActions.receivedMessage(msg))
-  Services.SlackBot.getContext(msg.channel)
 
   if (msg.text === '' || msg.text === ':') {
     bot.reply(msg, 'Well, try `@ryszard hello` to get some help <@' + msg.user + '>')
