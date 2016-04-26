@@ -3,7 +3,7 @@
 module.exports = require('./get-webpack-config')({
   reactHot: false,
   devtool: 'hidden-source-map',
-  uglify: true,
+  uglify: false,
   extractCss: true,
   minify: false
 })

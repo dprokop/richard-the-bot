@@ -7,7 +7,6 @@ class SlackBot {
       this.controller = Botkit.slackbot({
         debug: false
       })
-
       this.controller.spawn({
         token: config.token
       }).startRTM((err, bot, slackResponse) => {

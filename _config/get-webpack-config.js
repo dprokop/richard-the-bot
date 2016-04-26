@@ -64,7 +64,7 @@ module.exports = function (options) {
     entry: {
       bot: 'index.js'
     },
-
+    target: 'node',
     eslint: {
       configFile: './.eslintrc',
       emitError: true,
