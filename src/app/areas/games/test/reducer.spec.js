@@ -32,7 +32,7 @@ describe('Games reducer', () => {
       type: 'ADD_GAME',
       payload: {
         id: 'abc',
-        channel: 1,
+        channel: 2,
         organizer: 'Dominik',
         createdAt: timestamp
       }
