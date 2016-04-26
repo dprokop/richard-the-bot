@@ -3,17 +3,13 @@ import shortid from 'shortid'
 class Ticker {
   constructor () {
     this.tickers = {}
-
-    this.createCallback = this.createCallback.bind(this)
-    this.do = this.do.bind(this)
-    this.remove = this.remove.bind(this)
   }
 
-  every (tick) {
+  every = (tick) => {
     return this.createCallback(shortid.generate(), tick)
   }
 
-  createCallback (id, interval) {
+  createCallback = (id, interval) => {
     return {
       do: (callback) => {
         this.do(id, interval, callback)
@@ -22,7 +18,7 @@ class Ticker {
     }
   }
 
-  do (id, interval, callback) {
+  do = (id, interval, callback) => {
     if (this.tickers[id] === undefined) {
       console.log('Setting ticker ', id)
       this.tickers[id] = setInterval(callback, interval)
@@ -35,7 +31,7 @@ class Ticker {
     throw new TypeError('Ticker of this id is already defined')
   }
 
-  remove (id) {
+  remove = (id) => {
     console.log('Removing ticker ', id)
     if (this.tickers[id] !== undefined) {
       clearInterval(this.tickers[id])

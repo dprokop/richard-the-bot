@@ -1,4 +1,4 @@
 {
-  "plugins": ["transform-object-rest-spread", "syntax-object-rest-spread", "transform-es2015-function-name"],
+  "plugins": ["transform-object-rest-spread", "syntax-object-rest-spread", "transform-es2015-function-name", "transform-class-properties"],
   "presets": ["es2015"]
 }
