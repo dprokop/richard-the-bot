@@ -5,3 +5,5 @@ before_script:
   - npm run test
 script:
   - npm run dist
+after_script:
+  - ls dist/
