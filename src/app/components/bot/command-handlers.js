@@ -214,7 +214,7 @@ function pingHandler (bot, message) {
 
 function getHelpHandler (bot, message) {
     /* eslint-disable max-len */
-  var reply = "_Hi, I\'m *Ryszard* and I will organize a foosball team for you :heart:_ \n\n"
+  var reply = "_Hi, I'm *Ryszard* and I will organize a foosball team for you :heart:_ \n\n"
   reply += '_Let me introduce you to the language I speak:_\n'
   reply += '=====================:heart::soccer::heart:=====================\n'
   reply += "`@ryszard let's do it`, `@ryszard it's time` `@ryszard gramy` - _that's how you tell me that you are looking for a team. I'll as random 3 ppl if they want to play_\n"
