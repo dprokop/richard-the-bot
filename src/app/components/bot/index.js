@@ -12,7 +12,8 @@ import _ from 'underscore'
 
 class RBot {
   constructor () {
-    this.gameStatusTicker = Ticker.every(5000).do(CommandHandlers.periodicEventsHandler)
+    this.ticker = new Ticker()
+    this.gameStatusTicker = this.ticker.every(5000).do(CommandHandlers.periodicEventsHandler)
 
     this.initializeListeners()
   }

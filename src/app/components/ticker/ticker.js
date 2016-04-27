@@ -5,12 +5,13 @@ class Ticker {
     this.tickers = {}
   }
 
-  every = (tick) => {
-    return this.createCallback(shortid.generate(), tick)
+  every = (interval) => {
+    return this.createCallback(shortid.generate(), interval)
   }
 
   createCallback = (id, interval) => {
     return {
+      id: id,
       do: (callback) => {
         this.do(id, interval, callback)
         return id
@@ -42,6 +43,6 @@ class Ticker {
   }
 }
 
-var ticker = new Ticker()
+//var ticker = new Ticker()
 
-export default ticker
+export default Ticker
