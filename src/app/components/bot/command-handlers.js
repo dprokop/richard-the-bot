@@ -61,7 +61,7 @@ function confirmGameHandler (bot, msg) {
 
   bot.reply(msg, reply)
 
-  return this.gameStatusHandler(msg)
+  return gameStatusHandler(msg)
 }
 
 function rejectGameHandler (bot, msg) {
@@ -213,7 +213,7 @@ function pingHandler (bot, message) {
 }
 
 function getHelpHandler (bot, message) {
-    /* eslint-disable max-len */
+  /* eslint-disable max-len */
   var reply = "_Hi, I'm *Ryszard* and I will organize a foosball team for you :heart:_ \n\n"
   reply += '_Let me introduce you to the language I speak:_\n'
   reply += '=====================:heart::soccer::heart:=====================\n'
@@ -224,7 +224,7 @@ function getHelpHandler (bot, message) {
   reply += '`@ryszard help`, `@ryszard hello` _if you need some help on how to talk with me_\n'
   reply += '`@ryszard status` _if you need to know some details about current game being planned_ \n'
   reply += '=====================:heart::soccer::heart:=====================\n'
-        /* eslint-enable max-len */
+  /* eslint-enable max-len */
   bot.reply(message, reply)
 }
 
