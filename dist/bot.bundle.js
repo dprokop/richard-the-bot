@@ -134,8 +134,8 @@
 	      this.express.get('/', function (req, res) {
 	        res.send('hello world');
 	      });
-	      this.express.listen((5000));
-	      console.log((5000));
+	      this.express.listen(process.env.PORT);
+	      console.log(process.env.PORT);
 	    }
 	  }]);
 	
