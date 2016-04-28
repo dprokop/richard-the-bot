@@ -2,7 +2,7 @@ import AppSettings from './config/app_settings'
 import setupStore from './config/store'
 import RBot from './components/bot'
 import { bootServices } from './common/services'
-
+import express from 'express'
 var MongoClient = require('mongodb').MongoClient
 var assert = require('assert')
 
@@ -19,6 +19,8 @@ class App {
       console.log('Services booted, starting Ryszard')
       this.bot = new RBot()
     })
+
+    this.configureExpressEndpoints()
   }
 
   /**
@@ -27,6 +29,14 @@ class App {
   configureServices () {
     console.log('Booting up services')
     return bootServices(AppSettings.services)
+  }
+
+  configureExpressEndpoints () {
+    this.express = express()
+    this.express.get('/', function (req, res) {
+      res.send('hello world')
+    })
+    this.express.listen(process.env.PORT)
   }
 }
 

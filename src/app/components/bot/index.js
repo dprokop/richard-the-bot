@@ -23,7 +23,6 @@ class RBot {
 
     KeywordsConfig.forEach((v, k) => {
       var handlerName = this.getHandlerName(k)
-      console.log(CommandHandlers[handlerName])
       Services.SlackBot.controller.hears(v.phrases, v.triggers, CommandHandlers[handlerName])
     })
   }
