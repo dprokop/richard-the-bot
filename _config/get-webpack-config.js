@@ -26,7 +26,8 @@ module.exports = function (options) {
   var plugins = []
   var settings = Object.assign({}, defaultOptions, options)
   var envPlugin = new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify(defaultOptions.env)
+    'process.env.NODE_ENV': JSON.stringify(defaultOptions.env),
+    'process.env.PORT': process.env.PORT
   })
 
   var jsLoaders = [
