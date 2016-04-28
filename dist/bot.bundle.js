@@ -82,12 +82,16 @@
 	
 	var _services = __webpack_require__(13);
 	
+	var _express = __webpack_require__(28);
+	
+	var _express2 = _interopRequireDefault(_express);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var MongoClient = __webpack_require__(17).MongoClient;
-	var assert = __webpack_require__(28);
+	var assert = __webpack_require__(29);
 	
 	/** Class representing app */
 	
@@ -108,6 +112,8 @@
 	      console.log('Services booted, starting Ryszard');
 	      _this.bot = new _bot2.default();
 	    });
+	
+	    this.configureExpressEndpoints();
 	  }
 	
 	  /**
@@ -120,6 +126,15 @@
 	    value: function configureServices() {
 	      console.log('Booting up services');
 	      return (0, _services.bootServices)(_app_settings2.default.services);
+	    }
+	  }, {
+	    key: 'configureExpressEndpoints',
+	    value: function configureExpressEndpoints() {
+	      this.express = (0, _express2.default)();
+	      this.express.get('/', function (req, res) {
+	        res.send('hello world');
+	      });
+	      this.express.listen(process.env.PORT);
 	    }
 	  }]);
 	
@@ -1347,7 +1362,6 @@
 	
 	      _config2.default.forEach(function (v, k) {
 	        var handlerName = _this.getHandlerName(k);
-	        console.log(_commandHandlers2.default[handlerName]);
 	        _services2.default.SlackBot.controller.hears(v.phrases, v.triggers, _commandHandlers2.default[handlerName]);
 	      });
 	    }
@@ -1971,6 +1985,12 @@
 
 /***/ },
 /* 28 */
+/***/ function(module, exports) {
+
+	module.exports = require("express");
+
+/***/ },
+/* 29 */
 /***/ function(module, exports) {
 
 	module.exports = require("assert");
