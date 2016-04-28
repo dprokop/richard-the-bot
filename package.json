@@ -15,6 +15,7 @@
     "docs": "node _scripts/verifyAreas.js && jsdoc --configure _config/jsdoc.config.json --verbose",
     "areas:create": "node _scripts/createArea.js",
     "areas:verify": "node _scripts/verifyAreas.js",
+    "postinstall": "npm run dist",
     "start": "export PORT=5000 && node dist/bot.bundle.js"
   },
   "author": "Dominik Prokop",
