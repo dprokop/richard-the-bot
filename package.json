@@ -14,7 +14,8 @@
     "serve:dist": "npm run dist && node dist/bot.bundle.js",
     "docs": "node _scripts/verifyAreas.js && jsdoc --configure _config/jsdoc.config.json --verbose",
     "areas:create": "node _scripts/createArea.js",
-    "areas:verify": "node _scripts/verifyAreas.js"
+    "areas:verify": "node _scripts/verifyAreas.js",
+    "start": "node dist/bot.bundle.js"
   },
   "author": "Dominik Prokop",
   "license": "MIT",
