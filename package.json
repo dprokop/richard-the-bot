@@ -16,7 +16,7 @@
     "areas:create": "node _scripts/createArea.js",
     "areas:verify": "node _scripts/verifyAreas.js",
     "postinstall": "npm run dist",
-    "start": "export PORT=5000 && node dist/bot.bundle.js"
+    "start": "node dist/bot.bundle.js"
   },
   "author": "Dominik Prokop",
   "license": "MIT",
